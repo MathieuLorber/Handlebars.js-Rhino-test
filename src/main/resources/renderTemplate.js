@@ -1,2 +1,2 @@
-var template = Handlebars.compile(source);
+var template = Handlebars.compile(template);
 template(context);

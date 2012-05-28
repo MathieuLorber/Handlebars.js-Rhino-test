@@ -13,22 +13,21 @@ import com.google.common.io.Files;
 public class HandlebarsjsRhinoTest {
 
 	public static void main(String[] args) throws IOException {
-		Context context = Context.enter();
-
-		Scriptable scope = context.initStandardObjects();
-
 		String handlebar = getFileContent("handlebars-1.0.0.beta.6.js");
-		String myjs = getFileContent("renderTemplate.js");
-
-		scope.put("source", scope, getFileContent("template.html"));
-
+		String renderTemplate = getFileContent("renderTemplate.js");
+		String template = getFileContent("template.html");
+		
+		Context context = Context.enter();
+		Scriptable scope = context.initStandardObjects();
+		
 		HandlebarContext handlebarContext = new HandlebarContext();
 		handlebarContext.setTitle("My New Post");
 		handlebarContext.setBody("This is my first post!");
 		scope.put("context", scope, handlebarContext);
+		scope.put("template", scope, template);
 
 		context.evaluateString(scope, handlebar, "somefile", 1, null);
-		Object result = context.evaluateString(scope, myjs, "somefile", 1, null);
+		Object result = context.evaluateString(scope, renderTemplate, "somefile", 1, null);
 
 		System.out.println(Context.toString(result));
 
